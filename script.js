@@ -5,3 +5,10 @@ document.getElementById("languageSelect").addEventListener("change", () => {
     });
 });
 
+
+document.getElementById("typingLanguageSelect").addEventListener("change", () => {
+    const typingLanguage = document.getElementById("typingLanguageSelect").value;
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        chrome.tabs.sendMessage(tabs[0].id, { action: "setTypingLanguage", typingLanguage });
+    });
+});

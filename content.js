@@ -74,6 +74,31 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         clearProcessedMessages();
         setupMutationObserver(request.selectedLanguage);
     }
-
+    if (request.action === "setTypingLanguage") {
+        typingLanguage = request.typingLanguage;
+        updateMessageBoxWithLanguage(typingLanguage);
+    }
 });
 
+let typingLanguage = "en";
+
+function updateMessageBoxWithLanguage(language) {
+    if (!language || language === "nothing") {
+        return;
+    }
+
+    const languageText = language === "eng" ? "Typing in English" :
+    language === "bd" ? "Typing in Bangla" :
+    language === "ind" ? "Typing in Hindi" : "";
+
+    const main = document.querySelector("#main")
+
+    const messageBox = main.querySelector('div[contenteditable="true"]');
+    const editorSpan = messageBox.querySelector('span[data-lexical-text]')
+    if (editorSpan) {
+        const origMessage = editorSpan.childNodes[0].data;
+        const newMessage = languageText;
+        editorSpan.childNodes[0].data = newMessage;
+
+    }
+}
